@@ -20,4 +20,7 @@ public class ProductRepository {
         return productData.iterator();
     }
 
+    public void deleteById(String productId) {
+        productData.removeIf(product -> product.getProductId().equals(productId));
+    }
 }
