@@ -37,13 +37,13 @@ public class ProductController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editProductPage(@PathVariable String productId, Model model) {
+    public String editProductPage(@PathVariable("id") String productId, Model model) {
         Product existingProduct = service.findById(productId);
-        if (existingProduct != null) {
+        if (existingProduct == null) {
             return "redirect:/product/list";
         }
         model.addAttribute("product", existingProduct);
-        return "editProduct";
+        return "EditProduct";
     }
 
     @PostMapping("/edit")
