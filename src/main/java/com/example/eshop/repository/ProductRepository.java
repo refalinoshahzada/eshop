@@ -20,8 +20,13 @@ public class ProductRepository {
         return productData.iterator();
     }
 
-    public void deleteById(String productId) {
-        productData.removeIf(product -> product.getProductId().equals(productId));
+    public Product findById(String productId) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(productId)) {
+                return product;
+            }
+        }
+        return null;
     }
 
     public Product update(Product updatedProduct) {
@@ -34,13 +39,7 @@ public class ProductRepository {
         return null;
     }
 
-    public Product findById(String productId) {
-        for (Product product : productData) {
-            if (product.getProductId().equals(productId)) {
-                return product;
-            }
-        }
-        return null;
+    public void deleteById(String productId) {
+        productData.removeIf(product -> product.getProductId().equals(productId));
     }
-
 }

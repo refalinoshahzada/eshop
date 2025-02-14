@@ -5,8 +5,8 @@ import com.example.eshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ProductController {
     @GetMapping("/create")
     public String createProductPage(Model model) {
         Product product = new Product();
-        model.addAttribute("product", product);
+        model.addAttribute( "product", product);
         return "createProduct";
     }
 
@@ -36,8 +36,8 @@ public class ProductController {
         return "redirect:list";
     }
 
-    @GetMapping("/list")
-    public String productListPage(Model model) {
+    @GetMapping ("/list")
+    public String productListPage (Model model) {
         List<Product> allProducts = service.findAll();
         model.addAttribute("products", allProducts);
         return "productList";
