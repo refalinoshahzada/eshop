@@ -46,7 +46,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testCreateProductPost_withBindingErrors() {
+    void testCreateProductPostWithBindingErrors() {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         String viewName = productController.createProductPost(validProduct, bindingResult, model);
@@ -55,7 +55,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testCreateProductPost_noBindingErrors() {
+    void testCreateProductPostNoBindingErrors() {
         when(bindingResult.hasErrors()).thenReturn(false);
 
         String viewName = productController.createProductPost(validProduct, bindingResult, model);
@@ -76,7 +76,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testEditProductPage_productFound() {
+    void testEditProductPageProductFound() {
         when(productService.findById("test-id")).thenReturn(validProduct);
         String viewName = productController.editProductPage("test-id", model);
         assertEquals("editProduct", viewName, "Should return editProduct page if the product is found");
@@ -84,14 +84,14 @@ class ProductControllerTest {
     }
 
     @Test
-    void testEditProductPage_productNotFound() {
+    void testEditProductPageProductNotFound() {
         when(productService.findById("missing-id")).thenReturn(null);
         String viewName = productController.editProductPage("missing-id", model);
         assertEquals("redirect:/product/list", viewName, "Should redirect to product list if product not found");
     }
 
     @Test
-    void testEditProductPost_withErrors() {
+    void testEditProductPostWithErrors() {
         when(bindingResult.hasErrors()).thenReturn(true);
         String viewName = productController.editProductPost(validProduct, bindingResult);
         assertEquals("editProduct", viewName, "Should stay on editProduct page if validation fails");
@@ -99,7 +99,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void testEditProductPost_noErrors() {
+    void testEditProductPostNoErrors() {
         when(bindingResult.hasErrors()).thenReturn(false);
         String viewName = productController.editProductPost(validProduct, bindingResult);
         assertEquals("redirect:/product/list", viewName, "Should redirect if edit is successful");

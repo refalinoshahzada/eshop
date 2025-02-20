@@ -36,7 +36,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testCreate_withNoId_generatesNewId() {
+    void testCreateWithNoIdGeneratesNewId() {
         when(productRepository.create(any(Product.class))).thenReturn(product);
 
         Product result = productService.create(product);
@@ -45,7 +45,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testCreate_withExistingId_doesNotGenerateNewId() {
+    void testCreateWithExistingIdDoesNotGenerateNewId() {
         String existingId = UUID.randomUUID().toString();
         product.setProductId(existingId);
 
@@ -55,24 +55,24 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testCreate_withNullProduct_throwsException() {
+    void testCreateWithNullProductThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> productService.create(null));
     }
 
     @Test
-    void testCreate_withEmptyName_throwsException() {
+    void testCreateWithEmptyNameThrowsException() {
         product.setProductName("");
         assertThrows(IllegalArgumentException.class, () -> productService.create(product));
     }
 
     @Test
-    void testCreate_withNegativeQuantity_throwsException() {
+    void testCreateWithNegativeQuantityThrowsException() {
         product.setProductQuantity(-1);
         assertThrows(IllegalArgumentException.class, () -> productService.create(product));
     }
 
     @Test
-    void testCreate_withValidProduct_returnsCreatedProduct() {
+    void testCreateWithValidProductReturnsCreatedProduct() {
         product.setProductId("fixed-id");
         when(productRepository.create(any(Product.class))).thenReturn(product);
 
@@ -82,7 +82,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testCreate_withNullId_generatesNewId() {
+    void testCreateWithNullIdGeneratesNewId() {
         product.setProductId(null);
         when(productRepository.create(any(Product.class))).thenReturn(product);
 
@@ -92,7 +92,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testCreate_withEmptyId_generatesNewId() {
+    void testCreateWithEmptyIdGeneratesNewId() {
         product.setProductId("");
         when(productRepository.create(any(Product.class))).thenReturn(product);
 
@@ -102,7 +102,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAll_emptyList() {
+    void testFindAllEmptyList() {
         when(productRepository.findAll()).thenReturn(Collections.emptyIterator());
         List<Product> results = productService.findAll();
         assertTrue(results.isEmpty());
@@ -110,7 +110,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testFindAll_withProducts() {
+    void testFindAllWithProducts() {
         Product another = new Product();
         another.setProductId("another-id");
         another.setProductName("Another Product");
@@ -125,7 +125,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testFindById_found() {
+    void testFindByIdFound() {
         product.setProductId("some-id");
         when(productRepository.findById("some-id")).thenReturn(product);
 
@@ -136,7 +136,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testFindById_notFound() {
+    void testFindByIdNotFound() {
         when(productRepository.findById("unknown-id")).thenReturn(null);
 
         Product result = productService.findById("unknown-id");
@@ -145,7 +145,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testUpdate_validProduct() {
+    void testUpdateValidProduct() {
         product.setProductId("valid-id");
         when(productRepository.update(product)).thenReturn(product);
 
@@ -156,7 +156,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testUpdate_invalidProduct_throwsException() {
+    void testUpdateInvalidProductThrowsException() {
         // Missing product name triggers validation error
         Product invalidProduct = new Product();
         invalidProduct.setProductQuantity(5);
