@@ -3,7 +3,7 @@
 ## Table of Contents
 1. Module
 
-## Module 1 - Coding Standard
+# Module 1 - Coding Standard
 
 # Reflection 1: Clean Code and Secure Coding Practices
 
@@ -86,3 +86,16 @@ I think quality tests should focus on ensuring error handling, validating integr
 Regarding **Functional Test Code Cleanliness Issues**, there could be code duplication where there could be repeated test classes. Why is this an issue? because it violates DRY (Don't Repeat Yourself) principle, makes maintenance more difficult, increases chance of inconsistencies and decreases code reability.
 To improve this, a few things I would do is **implement page object pattern**, **create a base test class** and **create test helper methods**.
 With these improvements it would provide a sustainable and consistent test architecture that prevents inconsistencies.
+
+# Module 2 - CI/CD & DevOps
+
+# Reflection 1
+
+During this exercise, I found few issues in my code quality, a few that I found and fixed were:
+
+1. Using wrong naming conventions, where the most obvious example is the use of mixed naming format. I used both snake and camel case in one function name. This can cause naming redundancy and ambiguity when adding code related to those function names.
+2. The use of wildcard imports. Before I optimized my code, I used wildcard (*) imports instead of importing each and every needed individual import. Why it's important to fix this is because wildcard imports can cause potential naming conflicts and ambiguity.
+3. The use of unnecessary `public` modifiers in interface classes. This is unnecessary because variables that are declared inside an interface have a `public` modifier by default.
+
+# Reflection 2
+I think my code has met the definitions of Continuous Integration and Continuous Deployment. Workflow triggers automatically whenever there is a push request into a branch. This shows that CI has been implemented properly into my project. Project gets automatically deployed to my deploying platform (Koyeb) everytime there is a push request to a branch. This shows that CD has been implemented properly into my project.
