@@ -99,3 +99,84 @@ During this exercise, I found few issues in my code quality, a few that I found 
 
 # Reflection 2
 I think my code has met the definitions of Continuous Integration and Continuous Deployment. Workflow triggers automatically whenever there is a push request into a branch. This shows that CI has been implemented properly into my project. Project gets automatically deployed to my deploying platform (Koyeb) everytime there is a push request to a branch. This shows that CD has been implemented properly into my project.
+
+# Module 3 
+
+# Reflection
+
+### **SOLID Principles Applied in My Project**
+
+In this project, I incorporated three SOLID principles—Single Responsibility Principle (SRP), Open/Closed Principle (OCP), and Liskov Substitution Principle (LSP)—to enhance maintainability and deepen my understanding of development best practices.
+
+#### **Single Responsibility Principle (SRP)**
+The SRP states that a class or module should have only one reason to change. From the start, our project followed this principle by separating concerns—service classes like `CarServiceImpl` and `ProductServiceImpl` handle business logic, while `CarRepository` and `ProductRepository` focus on data persistence. I further reinforced SRP by refactoring `ProductController.java` in the Controller module. Initially, `CarController` was part of `ProductController` as an extended class, but I moved it to a separate file, `CarController.java`. This ensures that both `CarController` and `ProductController` handle only their respective objects, improving code organization and readability.
+
+#### **Open/Closed Principle (OCP)**
+The OCP states that software entities should be open for extension but closed for modification. Previously, adding a new repository required modifying existing service classes, which violated this principle. To resolve this, I introduced two interface files—`ProductRepositoryInterface.java` and `CarRepositoryInterface.java`—which act as abstractions for their respective repositories. Now, `CarRepository.java` and `ProductRepository.java` both implement their corresponding interfaces. With this approach, new repositories can extend existing interfaces without modifying existing code. 
+
+#### **Liskov Substitution Principle (LSP)**
+The LSP states that objects of a superclass should be replaceable with objects of its subclasses without affecting the correctness of the program. To support this principle, I introduced a new interface, `RepositoryInterface.java`, as a common base for `CarRepositoryInterface` and `ProductRepositoryInterface`. This ensures that all future repositories can seamlessly integrate without breaking existing functionality. I applied this structure across `CarREpositoryInterface.java`, `ProductRepositporyInterface.java`, `CarRepository.java`, and `ProductRepository.java`.
+
+By applying these SOLID principles, I improved the project's modularity, scalability, and maintainability while aligning with industry best practices.
+
+**Advantages of Applying SOLID principles**
+
+1. Easier to scale and modify
+```java
+1. @Repository
+public class ProductRepository implements ProductRepositoryInterface {
+
+    private final List<Product> productData = new ArrayList<>();
+    ...
+```
+Since the following code implements an Interface, it will be much easier to modify and edit. This is because
+After applying SOLID Principles, if we need to add new functionality, OCP ensures that we don't have to modify existing classes.
+SRP makes each class easier to understand and update without unintended side effects.
+
+2. More Flexible Code Structure
+
+```java
+package com.example.eshop.repository;
+
+import java.util.List;
+
+public interface RepositoryInterface<T> {
+    T create(T item);
+    List<T> findAll();
+    T findById(String id);
+    T update(T item);
+    void deleteById(String id);
+}
+```
+LSP ensures that all repositories behave consistently, allowing us to swap implementations seamlessly.
+
+3. Improved Readability and Maintainability
+
+```java
+@Controller
+@RequestMapping("/car")
+public class CarController {
+
+    private final CarService carservice;
+
+    public CarController(CarService carService) {
+        this.carservice = carService;
+    }
+    ...
+```
+
+SRP ensures that each class has a clear and well-defined responsibility, making the codebase easier to navigate
+
+**Disadvantages of Not Applying SOLID Principles**
+
+1. Harder to extend
+
+This is an OCP violation. Without OCP, adding a new repository requires modifying existing service.
+
+2. Inconsistent and Error-Prone Code
+
+This is an LSP Violation. Lets say there was a function that returns different types across repositories, then the service layer must handle each case separately. This leads to a lot of bugs and inconsistencies.
+
+3. Code becomes harder to maintain
+
+If we wanted to add a new controller, it would be difficult as we dont extend it directly towards one controller.
