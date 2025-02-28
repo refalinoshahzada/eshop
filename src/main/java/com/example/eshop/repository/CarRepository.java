@@ -45,7 +45,7 @@ public class CarRepository implements CarRepositoryInterface {
     }
 
     @Override
-    public void delete(String id) {
+    public void deleteById(String id) {
         carData.removeIf(car -> car.getCarId().equals(id));
     }
 }
