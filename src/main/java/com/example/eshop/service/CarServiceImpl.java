@@ -1,6 +1,6 @@
 package com.example.eshop.service;
 import com.example.eshop.model.Car;
-import com.example.eshop.repository.CarRepository;
+import com.example.eshop.repository.CarRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
 
     @Autowired
-    private CarRepository carRepository;
+    private CarRepositoryInterface carRepository;
 
     @Override
     public Car create (Car car) {

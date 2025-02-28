@@ -1,7 +1,7 @@
 package com.example.eshop.service;
 
 import com.example.eshop.model.Product;
-import com.example.eshop.repository.ProductRepository;
+import com.example.eshop.repository.ProductRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepositoryInterface productRepository;
 
     @Override
     public Product create(Product product) {
