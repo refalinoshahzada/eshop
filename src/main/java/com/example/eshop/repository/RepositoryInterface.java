@@ -7,5 +7,5 @@ public interface RepositoryInterface<T> {
     List<T> findAll();
     T findById(String id);
     T update(T item);
-    void delete(String id);
+    void deleteById(String id);
 }
