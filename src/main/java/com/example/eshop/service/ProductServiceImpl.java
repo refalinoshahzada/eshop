@@ -28,7 +28,6 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalArgumentException("Quantity must be at least 1");
         }
 
-        // Proceed normally if checks pass
         productRepository.create(product);
         return product;
     }
@@ -45,7 +44,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product update(Product product) {
-        // You can add validations (similar to create) if your tests require them
+        // Perform the same validations on update:
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+        if ((product.getProductName() == null) || product.getProductName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be empty");
+        }
+        if (product.getProductQuantity() < 1) {
+            throw new IllegalArgumentException("Quantity must be at least 1");
+        }
+
         return productRepository.update(product);
     }
 

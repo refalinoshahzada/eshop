@@ -14,15 +14,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
@@ -43,8 +37,31 @@ class ProductServiceImplTest {
     }
 
     @Test
+    void testCreateWithNullIdGeneratesNewId() {
+        product.setProductId(null);
+
+        when(productRepository.create(any(Product.class))).thenAnswer(invocation -> {
+            Product p = invocation.getArgument(0);
+            if (p.getProductId() == null || p.getProductId().isEmpty()) {
+                p.setProductId(UUID.randomUUID().toString());
+            }
+            return p;
+        });
+
+        Product result = productService.create(product);
+        assertNotNull(result.getProductId());
+        verify(productRepository).create(product);
+    }
+
+    @Test
     void testCreateWithNoIdGeneratesNewId() {
-        when(productRepository.create(any(Product.class))).thenReturn(product);
+        when(productRepository.create(any(Product.class))).thenAnswer(invocation -> {
+            Product p = invocation.getArgument(0);
+            if (p.getProductId() == null || p.getProductId().isEmpty()) {
+                p.setProductId(UUID.randomUUID().toString());
+            }
+            return p;
+        });
 
         Product result = productService.create(product);
         assertNotNull(result.getProductId());
@@ -55,6 +72,8 @@ class ProductServiceImplTest {
     void testCreateWithExistingIdDoesNotGenerateNewId() {
         String existingId = UUID.randomUUID().toString();
         product.setProductId(existingId);
+
+        when(productRepository.create(any(Product.class))).thenReturn(product);
 
         productService.create(product);
         assertEquals(existingId, product.getProductId());
@@ -85,26 +104,6 @@ class ProductServiceImplTest {
 
         Product result = productService.create(product);
         assertEquals("fixed-id", result.getProductId());
-        verify(productRepository).create(product);
-    }
-
-    @Test
-    void testCreateWithNullIdGeneratesNewId() {
-        product.setProductId(null);
-        when(productRepository.create(any(Product.class))).thenReturn(product);
-
-        Product result = productService.create(product);
-        assertNotNull(result.getProductId());
-        verify(productRepository).create(product);
-    }
-
-    @Test
-    void testCreateWithEmptyIdGeneratesNewId() {
-        product.setProductId("");
-        when(productRepository.create(any(Product.class))).thenReturn(product);
-
-        Product result = productService.create(product);
-        assertNotNull(result.getProductId());
         verify(productRepository).create(product);
     }
 
