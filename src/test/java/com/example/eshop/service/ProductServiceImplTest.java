@@ -11,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -111,7 +110,7 @@ class ProductServiceImplTest {
 
     @Test
     void testFindAllEmptyList() {
-        when(productRepository.findAll()).thenReturn(Collections.emptyIterator());
+        when(productRepository.findAll()).thenReturn(Collections.emptyList());
         List<Product> results = productService.findAll();
         assertTrue(results.isEmpty());
         verify(productRepository).findAll();
@@ -124,8 +123,8 @@ class ProductServiceImplTest {
         another.setProductName("Another Product");
         another.setProductQuantity(5);
 
-        Iterator<Product> iterator = Arrays.asList(product, another).iterator();
-        when(productRepository.findAll()).thenReturn(iterator);
+        List<Product> productList = Arrays.asList(product, another);
+        when(productRepository.findAll()).thenReturn(productList);
 
         List<Product> results = productService.findAll();
         assertEquals(2, results.size());
