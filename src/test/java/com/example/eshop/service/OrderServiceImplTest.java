@@ -16,23 +16,25 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.eshop.enums.OrderStatus;
+import com.example.eshop.model.Order;
 import com.example.eshop.model.Product;
 import com.example.eshop.repository.OrderRepository;
-import com.example.eshop.model.Order;
-import com.example.eshop.service.OrderServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
+
     @InjectMocks
     OrderServiceImpl orderService;
 
     @Mock
     OrderRepository orderRepository;
 
-    List<Order> orderList;
+    // Renamed this to 'orders' to match the usage in setUp()
+    List<Order> orders;
 
     @BeforeEach
     void setUp() {
+        // Prepare sample products
         List<Product> products = new ArrayList<>();
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -40,12 +42,24 @@ class OrderServiceImplTest {
         product1.setProductQuantity(2);
         products.add(product1);
 
+        // Initialize 'orders'
         orders = new ArrayList<>();
-        Order order1 = new Order("13652556-012a-4c07-b546-54eb1396d79b", products,
-                1708560000L, "Safira Sudrajat");
+
+        // Create sample orders
+        Order order1 = new Order(
+                "13652556-012a-4c07-b546-54eb1396d79b",
+                products,
+                1708560000L,
+                "Safira Sudrajat"
+        );
         orders.add(order1);
-        Order order2 = new Order("7f9e15bb-4b15-42f4-aebc-c3af385fb078", products,
-                1708570000L, "Safira Sudrajat");
+
+        Order order2 = new Order(
+                "7f9e15bb-4b15-42f4-aebc-c3af385fb078",
+                products,
+                1708570000L,
+                "Safira Sudrajat"
+        );
         orders.add(order2);
     }
 
@@ -58,55 +72,73 @@ class OrderServiceImplTest {
         verify(orderRepository, times(1)).save(order);
         assertEquals(order.getId(), result.getId());
     }
+
     @Test
     void testCreateOrderIfAlreadyExists() {
         Order order = orders.get(1);
         doReturn(order).when(orderRepository).findById(order.getId());
 
         assertNull(orderService.createOrder(order));
-        verify(orderRepository, times(0)).save(order);
+        verify(orderRepository, never()).save(order);
     }
+
     @Test
     void testUpdateStatus() {
         Order order = orders.get(1);
-        Order newOrder = new Order(order.getId(), order.getProducts(), order.getOrderTime(), order.getAuthor(), OrderStatus.SUCCESS.getValue());
+        Order newOrder = new Order(
+                order.getId(),
+                order.getProducts(),
+                order.getOrderTime(),
+                order.getAuthor(),
+                OrderStatus.SUCCESS.getValue()
+        );
+
         doReturn(order).when(orderRepository).findById(order.getId());
         doReturn(newOrder).when(orderRepository).save(any(Order.class));
 
         Order result = orderService.updateStatus(order.getId(), OrderStatus.SUCCESS.getValue());
-
         assertEquals(order.getId(), result.getId());
         assertEquals(OrderStatus.SUCCESS.getValue(), result.getStatus());
         verify(orderRepository, times(1)).save(any(Order.class));
     }
+
     @Test
     void testUpdateStatusInvalidStatus() {
         Order order = orders.get(1);
         doReturn(order).when(orderRepository).findById(order.getId());
 
-        assertThrows(IllegalArgumentException.class, () -> orderService.updateStatus(order.getId(), "MEOW"));
-        verify(orderRepository, times(0)).save(any(Order.class));
+        assertThrows(IllegalArgumentException.class, () ->
+                orderService.updateStatus(order.getId(), "MEOW")
+        );
+        verify(orderRepository, never()).save(any(Order.class));
     }
+
     @Test
     void testUpdateStatusInvalidOrderId() {
         doReturn(null).when(orderRepository).findById("zczc");
 
-        assertThrows(NoSuchElementException.class, () -> orderService.updateStatus("zczc", OrderStatus.SUCCESS.getValue()));
-
-        verify(orderRepository, times(0)).save(any(Order.class));
+        assertThrows(NoSuchElementException.class, () ->
+                orderService.updateStatus("zczc", OrderStatus.SUCCESS.getValue())
+        );
+        verify(orderRepository, never()).save(any(Order.class));
     }
+
     @Test
     void testFindByIdIfIdFound() {
         Order order = orders.get(1);
         doReturn(order).when(orderRepository).findById(order.getId());
+
         Order result = orderService.findById(order.getId());
         assertEquals(order.getId(), result.getId());
     }
+
     @Test
     void testFindByIdIfIdNotFound() {
         doReturn(null).when(orderRepository).findById("zczc");
+
         assertNull(orderService.findById("zczc"));
     }
+
     @Test
     void testFindAllByAuthorIfAuthorCorrect() {
         Order order = orders.get(1);
@@ -118,10 +150,12 @@ class OrderServiceImplTest {
         }
         assertEquals(2, results.size());
     }
+
     @Test
-    void testFindAllByAuthorIfALlLowercase() {
+    void testFindAllByAuthorIfAllLowercase() {
         Order order = orders.get(1);
         doReturn(new ArrayList<Order>()).when(orderRepository).findAllByAuthor(order.getAuthor().toLowerCase());
+
         List<Order> results = orderService.findAllByAuthor(order.getAuthor().toLowerCase());
         assertTrue(results.isEmpty());
     }
