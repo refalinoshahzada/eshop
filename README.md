@@ -180,3 +180,18 @@ This is an LSP Violation. Lets say there was a function that returns different t
 3. Code becomes harder to maintain
 
 If we wanted to add a new controller, it would be difficult as we dont extend it directly towards one controller.
+
+# Module 4
+
+1. I believe Test-Driven Development (TDD) is especially beneficial for large projects that require long-term reliability and maintenance. When applied properly, it can enhance code quality, reduce bugs, speed up debugging, simplify refactoring, and improve team collaboration. However, I personally find it challenging since I'm not accustomed to writing tests before implementing the code. I know it will take some time to fully adapt to this methodology, but I plan to gradually integrate TDD into my workflow. My goal is to start by defining user input scenarios first and then develop the most appropriate implementation.
+2. I believe my tests align with the F.I.R.S.T. principles. 
+
+    For **"F" (Fast)**, my test cases currently run efficiently since I use Mockito, and the testing scale remains relatively small. However, I am unsure if they will maintain their speed when scaling up to thousands of unit tests.
+
+    For **"I" (Isolated)**, my tests are independent, meaning the correctness of one test does not rely on another. This suggests that I am following this principle effectively.
+
+    For **"R" (Repeatable)**, since Mockito eliminates dependencies on external environments and ensures independent data usage, my tests are consistent and can be reliably repeated. I believe this meets the principle’s requirements.
+
+    For **"S" (Self-Validating)**, all my tests include assertions, but I haven't added messages to them. To improve, I could incorporate descriptive messages in assertions to provide clearer insights for testers.
+
+    For **"T" (Thorough/Timely)**, my tests cover various scenarios, including both positive (happy) and negative (unhappy) paths. My tests for the Order model, repository, and service achieve 100% branch and line coverage. While this doesn’t guarantee perfect tests, it ensures that many edge cases are considered. In larger-scale projects, I could further improve by adding additional tests to cover potential overlooked scenarios.
