@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -35,9 +35,9 @@ public class ProductRepositoryTest {
         product.setProductQuantity(100);
         productRepository.create(product);
 
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertTrue(productIterator.hasNext());
-        Product savedProduct = productIterator.next();
+        List<Product> products = productRepository.findAll();
+        assertFalse(products.isEmpty());
+        Product savedProduct = products.get(0);
         assertEquals(savedProduct.getProductId(), product.getProductId());
         assertEquals(savedProduct.getProductName(), product.getProductName());
         assertEquals(savedProduct.getProductQuantity(), product.getProductQuantity());
@@ -45,8 +45,8 @@ public class ProductRepositoryTest {
 
     @Test
     void testFindAllIfEmpty() {
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertFalse(productIterator.hasNext());
+        List<Product> products = productRepository.findAll();
+        assertTrue(products.isEmpty());
     }
 
     @Test
@@ -63,13 +63,10 @@ public class ProductRepositoryTest {
         product2.setProductQuantity(50);
         productRepository.create(product2);
 
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertTrue(productIterator.hasNext());
-        Product savedProduct = productIterator.next();
-        assertEquals(product1.getProductId(), savedProduct.getProductId());
-        savedProduct = productIterator.next();
-        assertEquals(product2.getProductId(), savedProduct.getProductId());
-        assertFalse(productIterator.hasNext());
+        List<Product> products = productRepository.findAll();
+        assertEquals(2, products.size());
+        assertEquals(product1.getProductId(), products.get(0).getProductId());
+        assertEquals(product2.getProductId(), products.get(1).getProductId());
     }
 
     @Test
@@ -203,7 +200,7 @@ public class ProductRepositoryTest {
         productRepository.deleteById("missing-id");
 
         // Repository should remain empty
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertFalse(productIterator.hasNext(), "Expected an empty repository if product was never there");
+        List<Product> products = productRepository.findAll();
+        assertTrue(products.isEmpty(), "Expected an empty repository if product was never there");
     }
 }
