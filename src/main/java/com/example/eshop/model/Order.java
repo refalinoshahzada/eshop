@@ -4,7 +4,7 @@ package com.example.eshop.model;
 import java.util.List;
 import java.util.Arrays;
 
-import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import com.example.eshop.enums.OrderStatus;
 import lombok.Builder;
 import lombok.Getter;
 

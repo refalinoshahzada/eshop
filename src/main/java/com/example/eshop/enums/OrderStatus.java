@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.eshop.enums;
+package com.example.eshop.enums;
 
 import lombok.Getter;
 
